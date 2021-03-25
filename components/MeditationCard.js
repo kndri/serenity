@@ -23,13 +23,14 @@ const MeditationCard = props => (
 export default MeditationCard;
 
 const Card = styled.View`
-  background-color: white;
+  background-color: #fbfbfb;
   border-radius: 20px;
   height: 160px;
   margin-right: 30px;
   padding-left: 15px;
   padding-top: 32px;
   width: ${props => props.width};
+  
 `;
 
 const Title = styled.Text`
@@ -42,6 +43,7 @@ const Title = styled.Text`
 const Content = styled.View`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 `;
 
 const ContentLeft = styled.View`

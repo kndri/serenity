@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <Container>
       <Header
-        backgroundColor="#fff"
+        backgroundColor="#fbfbfb"
         containerStyle={{ paddingBottom: 30, paddingTop: 40 }}
         leftComponent={{
           text: "Dashboard",
