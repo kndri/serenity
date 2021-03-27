@@ -29,7 +29,7 @@ const Card = styled.View`
   margin-right: 30px;
   padding-left: 15px;
   padding-top: 32px;
-  width: ${props => props.width};
+  /* width: ${props => props.width}; */
   
 `;
 

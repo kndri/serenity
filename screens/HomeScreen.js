@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
           style: { color: "#000000", fontFamily: 'NunitoSans_700Bold', fontSize: 25, fontWeight: "500" },
         }}
         rightComponent={<Feather name="filter" size={24} color="black" />}
-        leftContainerStyle={{ flex: "3" }}
+        leftContainerStyle={{ flex: 3 }}
       />
       <DailyCard>
         <TouchableOpacity>
@@ -98,7 +98,6 @@ const DailyCardText = styled.Text`
 const Subtitle = styled.Text`
   font-family: "NunitoSans_600SemiBold";
   font-size: 19px;
-  font-weight: 700;
   margin-bottom: 30px;
 `;
 
