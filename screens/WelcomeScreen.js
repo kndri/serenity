@@ -7,7 +7,7 @@ import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get('window').width;
 
-const WelcomeScreen = () => (
+const WelcomeScreen = ({ navigation })  => (
   <Container>
         <Header
         backgroundColor="#fbfbfb"
@@ -21,10 +21,11 @@ const WelcomeScreen = () => (
         <Heading>Christ.</Heading>
       </HeadingContainer>
       <SubHeading>Experience mindfullness powered by Christ.</SubHeading>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('SignUpEmail')}
+      >
         <CTA>
           <CTAText>Sign up</CTAText>
-          {/* <RightIcon source={require("../assets/white-right-icon.png")} /> */}
         </CTA>
       </TouchableOpacity>
       <LoginContainer>
@@ -87,9 +88,6 @@ const CTAText = styled.Text`
   font-family: "NunitoSans_600SemiBold";
   font-size: 17px;
   text-align: center;
-`;
-
-const RightIcon = styled.Image`
 `;
 
 const LoginContainer = styled.View`

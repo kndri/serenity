@@ -2,6 +2,7 @@ import * as React from 'react';
 import RootStack, { AuthScreens } from "./navigator/AppNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { FormProvider } from "./form-context";
 import AppLoading from 'expo-app-loading';
 import * as SecureStore from 'expo-secure-store';
 import {
@@ -12,10 +13,19 @@ import {
   NunitoSans_800ExtraBold,
   NunitoSans_900Black,
 } from "@expo-google-fonts/nunito-sans";
+import * as firebase from "firebase";
+import apiKeys from "./firebase";
 
-const AuthContext = React.createContext();
+export const AuthContext = React.createContext();
 
 const App = () => {
+  const [userId, setUserId] = React.useState("");
+
+  if (!firebase.apps.length) {
+    console.log("Connected with Firebase");
+    firebase.initializeApp(apiKeys.firebaseConfig);
+  }
+
   let [fontsLoaded] = useFonts({
     NunitoSans_400Regular,
     NunitoSans_600SemiBold,
@@ -87,12 +97,44 @@ const App = () => {
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
+        let userToken = "";
+        let reference;
+        try {
+            await firebase
+                .auth()
+                .createUserWithEmailAndPassword(
+                    data.email_address.trim(),
+                    data.password.trim()
+                )
+                .then((data) => {
+                    userToken = data.user.uid
+                    console.log('this is usertoken', userToken)
+                    setUserId(userToken)
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (err) {
+            console.log("firebase auth error: ", err.message);
+        }
+
+        try {
+              reference = "users/";
+              await firebase
+                  .database()
+                  .ref(reference + userToken)
+                  .set({
+                      userId: userToken,
+                  });
+          
+
+      } catch (err) {
+          console.log("firebase database error: ", err.message);
+      }
+      setUserId(userToken);
+
+      dispatch({ type: "SIGN_UP", token: userToken });
       },
     }),
     []
@@ -104,16 +146,17 @@ const App = () => {
   } else {
     return (
       <AuthContext.Provider value={authContext}>
-
-      <SafeAreaProvider>
-        <NavigationContainer>
-          {state.userToken == null ? (
-            <AuthScreens />
-          ) : (
-            <RootStack />
-          )}
-        </NavigationContainer>
-      </SafeAreaProvider>
+        <SafeAreaProvider>
+          <FormProvider>
+          <NavigationContainer>
+            {userId == null ? (
+              <AuthScreens />
+            ) : (
+              <RootStack />
+            )}
+          </NavigationContainer>
+          </FormProvider>
+        </SafeAreaProvider>
       </AuthContext.Provider>
 
     );

@@ -2,6 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import TabNavigator from "./TabNavigator";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import SignUpEmailScreen from "../screens/SignUpEmailScreen";
+import SignUpPasswordScreen from "../screens/SignUpPasswordScreen";
+
 
 const AuthStack = createStackNavigator();
 
@@ -13,16 +16,16 @@ export const AuthScreens = () => {
         component={WelcomeScreen}
         options={{ headerShown: false }}
       />
-      {/* <AuthStack.Screen
-        name="SignIn"
-        component={SignInScreen}
+      <AuthStack.Screen
+        name="SignUpEmail"
+        component={SignUpEmailScreen}
         options={{ headerShown: false }}
       />
       <AuthStack.Screen
-        name="SignUp"
-        component={SignUpScreen}
+        name="SignUpPassword"
+        component={SignUpPasswordScreen}
         options={{ headerShown: false }}
-      /> */}
+      />
     </AuthStack.Navigator>
   );
 };
