@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import ExploreScreen from "../screens/ExploreScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import { Ionicons, Feather } from "@expo/vector-icons";
 
 const activeColor = "#000000";
@@ -45,6 +46,11 @@ const ProfileStackScreen = () => {
       <ProfileStack.Screen
         name="Profile"
         component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <ProfileStack.Screen
+        name="Settings"
+        component={SettingsScreen}
         options={{ headerShown: false }}
       />
     </ProfileStack.Navigator>

@@ -47,7 +47,6 @@ const SignUpPasswordScreen = ({ navigation }) => {
         initialValues={formValues}
         initialErrors={formErrors}
         enableReinitialize
-        // TODO: connect onSubmit function to firebase user signup.
         onSubmit={(values) =>  signUp(values)}
       >
         {({ values, errors, handleChange, handleSubmit }) => (

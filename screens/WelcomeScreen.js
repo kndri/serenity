@@ -30,7 +30,9 @@ const WelcomeScreen = ({ navigation })  => (
       </TouchableOpacity>
       <LoginContainer>
         <LoginText>Already have an account?</LoginText>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+        >
           <LoginCTA>Login</LoginCTA>
         </TouchableOpacity>
       </LoginContainer>

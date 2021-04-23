@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Alert } from 'react-native';
 import RootStack, { AuthScreens } from "./navigator/AppNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -49,6 +50,13 @@ const App = () => {
             isSignout: false,
             userToken: action.token,
           };
+        case "SIGN_UP":
+          return {
+              ...prevState,
+              isSignout: false,
+              userToken: action.token,
+              isLoading: false,
+          };
         case 'SIGN_OUT':
           return {
             ...prevState,
@@ -88,12 +96,31 @@ const App = () => {
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
+        let user = "";
+        let access = false;
+        await firebase
+            .auth()
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+            .signInWithEmailAndPassword(data.email_address.trim(), data.password.trim())
+            .then((data) => {
+                user = data.user.uid
+                access = true;
+
+            })
+            .catch((error) => {
+                Alert.alert("Wrong email or password!", error.message);
+                access = false;
+
+            });
+
+        if (access == false) {
+
+            return
+        }
+        setUserId(user);
+
+
+        dispatch({ type: "SIGN_IN", token: user });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async data => {
@@ -108,9 +135,7 @@ const App = () => {
                 )
                 .then((data) => {
                     userToken = data.user.uid
-                    console.log('this is usertoken', userToken)
                     setUserId(userToken)
-
                 })
                 .catch((error) => {
                     console.log(error);
@@ -127,29 +152,25 @@ const App = () => {
                   .set({
                       userId: userToken,
                   });
-          
-
       } catch (err) {
           console.log("firebase database error: ", err.message);
       }
       setUserId(userToken);
-
       dispatch({ type: "SIGN_UP", token: userToken });
       },
-    }),
-    []
-  );
+    }));
 
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
+
     return (
       <AuthContext.Provider value={authContext}>
         <SafeAreaProvider>
           <FormProvider>
           <NavigationContainer>
-            {userId == null ? (
+            {state.userToken == null ? (
               <AuthScreens />
             ) : (
               <RootStack />

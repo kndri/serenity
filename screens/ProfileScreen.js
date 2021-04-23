@@ -2,7 +2,7 @@
 import React from "react";
 import { Header } from "react-native-elements";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-
+import { TouchableOpacity } from "react-native";
 import styled from "styled-components";
 
 const ProfileScreen = ({ navigation }) => {
@@ -19,7 +19,11 @@ const ProfileScreen = ({ navigation }) => {
             fontSize: 25,
           },
         }}
-        rightComponent={<Feather name="settings" size={24} color="black" />}
+        rightComponent={
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Feather name="settings" size={24} color="black" />
+          </TouchableOpacity>
+      }
         leftContainerStyle={{ flex: 3 }}
       />
       <UserContainer>

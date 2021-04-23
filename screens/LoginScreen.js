@@ -1,13 +1,12 @@
 import * as React from "react";
 import { Header } from "react-native-elements";
-import { TouchableOpacity, Dimensions } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import { Formik } from "formik";
 import { useFormState, useFormDispatch } from "../form-context";
+import { AuthContext } from "../App";
 import styled from "styled-components";
 
-const windowWidth = Dimensions.get('window').width;
-
-const SignUpEmailScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => {
   const form = React.useRef();
   const dispatch = useFormDispatch();
   const { values: formValues, errors: formErrors } = useFormState("user");
@@ -29,6 +28,8 @@ const SignUpEmailScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const { signIn } = React.useContext(AuthContext);
+
   return (
     <Container>
       <Header
@@ -39,29 +40,44 @@ const SignUpEmailScreen = ({ navigation }) => {
             <LeftIcon source={require("../assets/black-left-icon.png")} />
           </TouchableOpacity>
         }
-        centerComponent={<Heading>Please enter your email address</Heading>}
+        centerComponent={<Heading>Welcome Back</Heading>}
       />
       <Formik
         innerRef={form}
         initialValues={formValues}
         initialErrors={formErrors}
         enableReinitialize
+        onSubmit={(values) => signIn(values)}
       >
-        {({ values, handleChange }) => (
+        {({ values, errors, handleChange, handleSubmit }) => (
           <>
-            <EmailFieldGroup>
-              <EmailLabel>Email</EmailLabel>
-              <EmailInput
+            <FieldGroupContainer>
+              <EmailFieldGroup>
+                <EmailLabel>Email</EmailLabel>
+                <EmailInput
+                    autoCapitalize="none"
+                    label="Email Address"
+                    onChangeText={handleChange("email_address")}
+                  />
+              </EmailFieldGroup>
+              <PasswordFieldGroup>
+                <PasswordLabel>Password</PasswordLabel>
+                <PasswordInput
+                  secureTextEntry={true}
                   autoCapitalize="none"
-                  label="Email Address"
-                  onChangeText={handleChange("email_address")}
+                  label="Password"
+                  onChangeText={handleChange("password")}
                 />
-            </EmailFieldGroup>
+              </PasswordFieldGroup>
+              <TouchableOpacity>
+                <ForgotPasswordCTA>Forgot Password?</ForgotPasswordCTA>
+              </TouchableOpacity>
+            </FieldGroupContainer>
             <TouchableOpacity
-              onPress={() => navigation.navigate("SignUpPassword")}
+              onPress={handleSubmit}
             >
               <CTA>
-                <CTAText>Continue</CTAText>
+                <CTAText>Log In</CTAText>
               </CTA>
             </TouchableOpacity>
           </>
@@ -71,13 +87,13 @@ const SignUpEmailScreen = ({ navigation }) => {
   );
 };
 
-export default SignUpEmailScreen;
+export default LoginScreen;
 
 const Container = styled.View`
   background-color: #fbfbfb;
   flex: 1;
   padding: 0 30px;
-  justify-content: space-between;
+
 `;
 
 const LeftIcon = styled.Image``;
@@ -89,8 +105,12 @@ const Heading = styled.Text`
   text-align: center;
 `;
 
-const EmailFieldGroup = styled.View`
+const FieldGroupContainer = styled.View`
 
+`;
+
+const EmailFieldGroup = styled.View`
+  padding-bottom: 10px;
 `;
 
 const EmailLabel = styled.Text`
@@ -102,6 +122,27 @@ const EmailInput = styled.TextInput`
   border-radius: 25px;
   height: 50px;
   padding-left: 20px;
+`;
+
+const PasswordFieldGroup = styled.View`
+  padding-bottom: 25px;
+`;
+
+const PasswordLabel = styled.Text`
+  margin-bottom: 10px;
+`;
+
+const PasswordInput = styled.TextInput`
+  border: 1px solid black;
+  border-radius: 25px;
+  height: 50px;
+  padding-left: 20px;
+`;
+
+const ForgotPasswordCTA = styled.Text`
+  color: #808080;
+  font-size: 16px;
+  margin-bottom: 25px;
 `;
 
 const CTA = styled.View`
