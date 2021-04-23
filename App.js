@@ -151,6 +151,8 @@ const App = () => {
                   .ref(reference + userToken)
                   .set({
                       userId: userToken,
+                      email: data.email_address.trim(),
+                      name: data.name.trim()
                   });
       } catch (err) {
           console.log("firebase database error: ", err.message);
@@ -158,6 +160,9 @@ const App = () => {
       setUserId(userToken);
       dispatch({ type: "SIGN_UP", token: userToken });
       },
+      getUserId: () => {
+        return userId;
+    },
     }));
 
 

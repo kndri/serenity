@@ -5,8 +5,6 @@ import { Formik } from "formik";
 import { useFormState, useFormDispatch } from "../form-context";
 import styled from "styled-components";
 
-const windowWidth = Dimensions.get('window').width;
-
 const SignUpEmailScreen = ({ navigation }) => {
   const form = React.useRef();
   const dispatch = useFormDispatch();
@@ -39,7 +37,7 @@ const SignUpEmailScreen = ({ navigation }) => {
             <LeftIcon source={require("../assets/black-left-icon.png")} />
           </TouchableOpacity>
         }
-        centerComponent={<Heading>Please enter your email address</Heading>}
+        centerComponent={<Heading>Please enter your name</Heading>}
       />
       <Formik
         innerRef={form}
@@ -49,16 +47,16 @@ const SignUpEmailScreen = ({ navigation }) => {
       >
         {({ values, handleChange }) => (
           <>
-            <EmailFieldGroup>
-              <EmailLabel>Email</EmailLabel>
-              <EmailInput
+            <NameFieldGroup>
+              <NameLabel>Name</NameLabel>
+              <NameInput
                   autoCapitalize="none"
-                  label="Email Address"
-                  onChangeText={handleChange("email_address")}
+                  label="name"
+                  onChangeText={handleChange("name")}
                 />
-            </EmailFieldGroup>
+            </NameFieldGroup>
             <TouchableOpacity
-              onPress={() => navigation.navigate("SignUpName")}
+              onPress={() => navigation.navigate("SignUpPassword")}
             >
               <CTA>
                 <CTAText>Continue</CTAText>
@@ -89,15 +87,15 @@ const Heading = styled.Text`
   text-align: center;
 `;
 
-const EmailFieldGroup = styled.View`
+const NameFieldGroup = styled.View`
 
 `;
 
-const EmailLabel = styled.Text`
+const NameLabel = styled.Text`
   margin-bottom: 10px;
 `;
 
-const EmailInput = styled.TextInput`
+const NameInput = styled.TextInput`
   border: 1px solid black;
   border-radius: 25px;
   height: 50px;

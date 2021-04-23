@@ -1,11 +1,29 @@
 
-import React from "react";
+import * as React from "react";
+import * as firebase from "firebase";
+import { AuthContext } from "../App";
 import { Header } from "react-native-elements";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components";
 
 const ProfileScreen = ({ navigation }) => {
+
+  const { getUserId } = React.useContext(AuthContext);
+  const [info, setInfo] = React.useState([]);
+  let userId = getUserId();
+
+  React.useEffect(() => {
+    getUserData();
+}, []);
+
+const getUserData = () => {
+    let userRef = firebase.database().ref("users/" + userId);
+    userRef.on('value', function (snapshot) {
+        setInfo(snapshot.val());
+    });
+};
+
   return (
     <Container>
       <Header
@@ -29,8 +47,8 @@ const ProfileScreen = ({ navigation }) => {
       <UserContainer>
         <Image source={require('../assets/user-icon.png')} />
         <UserDetails>
-          <UserName>John Smith</UserName>
-          <Text>johnsmith@gmail.com</Text>
+          <UserName>{info.name}</UserName>
+          <Text>{info.email}</Text>
         </UserDetails>
       </UserContainer>
       <LearnMoreCard>

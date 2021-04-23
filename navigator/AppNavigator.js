@@ -4,6 +4,7 @@ import TabNavigator from "./TabNavigator";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SignUpEmailScreen from "../screens/SignUpEmailScreen";
+import SignUpNameScreen from "../screens/SignUpNameScreen";
 import SignUpPasswordScreen from "../screens/SignUpPasswordScreen";
 
 const AuthStack = createStackNavigator();
@@ -24,6 +25,11 @@ export const AuthScreens = () => {
       <AuthStack.Screen
         name="SignUpEmail"
         component={SignUpEmailScreen}
+        options={{ headerShown: false }}
+      />
+      <AuthStack.Screen
+        name="SignUpName"
+        component={SignUpNameScreen}
         options={{ headerShown: false }}
       />
       <AuthStack.Screen
